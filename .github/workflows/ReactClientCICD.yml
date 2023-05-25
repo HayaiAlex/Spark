@@ -33,6 +33,8 @@ jobs:
           app_location: "/sparkclient" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "build" # Built app content directory - optional
+        env:
+          REACT_APP_CLERK_PUBLISHABLE_KEY: "pk_test_aW52aXRpbmctYmFybmFjbGUtMjUuY2xlcmsuYWNjb3VudHMuZGV2JA"
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
