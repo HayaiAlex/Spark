@@ -4,6 +4,7 @@ import endpoints from "./lib/api";
 import type { Post } from "./lib/types";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
 dayjs.extend(relativeTime);
 
 export default function App() {
@@ -113,6 +114,8 @@ export default function App() {
           ))}
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 
@@ -135,6 +138,23 @@ export default function App() {
           )}
         </nav>
       </header>
+    );
+  }
+
+  function Footer() {
+    return (
+      <footer className="flex w-full items-center justify-center gap-2 bg-slate-500 p-2">
+        <p>Developed by Alex Adams</p>
+        <a
+          target="#"
+          href="https://www.linkedin.com/in/alexander-adams-018a04181/"
+        >
+          <FaLinkedin className="text-xl" />
+        </a>
+        <a target="#" href="https://github.com/HayaiAlex">
+          <FaGithub className="text-xl" />
+        </a>
+      </footer>
     );
   }
 
