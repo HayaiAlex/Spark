@@ -46,8 +46,8 @@ app.MapGet("/get-all-posts",async () => await PostsRepository.GetPostsAsync())
 
 app.MapGet("/get-post-by-id/{postId}", async (int postId) =>
 {
-    Post post = await PostsRepository.GetPostByIdAsync(postId);
-
+    PostWithAuthor? post = await PostsRepository.GetPostByIdAsync(postId);
+ 
     if (post != null)
     {
         return Results.Ok(post);

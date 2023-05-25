@@ -1,28 +1,90 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using static System.Net.WebRequestMethods;
 
 namespace Spark.Data
 {
     internal static class PostsRepository
     {
-        internal async static Task<List<Post>> GetPostsAsync()
+        public class ClerkUser
+        {
+            public string id { get; set; }
+            public string username { get; set; }
+            public string profile_image_url { get; set; }
+        }
+
+        private static async Task<List<PostWithAuthor>> AddAuthorsToPosts(List<Post> posts)
+        {
+            var userIds = posts.Select(post => post.AuthorId).Distinct().ToList();
+
+            string url = "https://api.clerk.com/v1/users";
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Environment.GetEnvironmentVariable("CLERK_API_KEY"));
+            var response = await client.GetAsync(url);
+            var users = await response.Content.ReadFromJsonAsync<List<ClerkUser>>();
+            if (users == null) users = new List<ClerkUser>();
+
+            // map clerk users to posts
+            List<PostWithAuthor> postsWithAuthor = new List<PostWithAuthor>();
+            posts.ForEach(post =>
+            {
+                var user = users.FirstOrDefault(user => user.id == post.AuthorId);
+                PostWithAuthor newPost = new PostWithAuthor(post);
+
+                if (user != null)
+                {
+                    newPost.Username = user.username;
+                    newPost.ProfilePicture = user.profile_image_url;
+                }
+                else
+                {
+                    newPost.Username = "";
+                    newPost.ProfilePicture = "";
+                }
+
+                postsWithAuthor.Add(newPost);
+            });
+
+            return postsWithAuthor;
+        }
+
+        internal async static Task<List<PostWithAuthor>> GetPostsAsync()
         {
             using (var db = new SparkDBContext())
             {
-                return await db.Posts.ToListAsync();
+                var posts = await db.Posts.Take(100).ToListAsync();
+
+                return await AddAuthorsToPosts(posts);
             }
         }
 
-        internal async static Task<Post> GetPostByIdAsync(int postId)
+        internal async static Task<PostWithAuthor?> GetPostByIdAsync(int postId)
         {
             using (var db = new SparkDBContext())
             {
                 Post? post =  await db.Posts.FirstOrDefaultAsync(post => post.PostId == postId);
-                post??= new Post {
-                    PostId = 0,
-                    CreatedAt = DateTime.Now,
-                    Content = "👀",
-                    AuthorId = "na"
-                };
+                if (post == null)
+                {
+                    return null;
+                }
+
+                var posts = new List<Post>();
+                posts.Add(post);
+                var postsWithAuthor = await AddAuthorsToPosts(posts);
+
+                return postsWithAuthor[0];
+            }
+        }
+        internal async static Task<Post?> GetBasicPostByIdAsync(int postId)
+        {
+            using (var db = new SparkDBContext())
+            {
+                Post? post = await db.Posts.FirstOrDefaultAsync(post => post.PostId == postId);
+                if (post == null)
+                {
+                    return null;
+                }
+
                 return post;
             }
         }
@@ -63,7 +125,7 @@ namespace Spark.Data
             {
                 try
                 {
-                    Post post = await GetPostByIdAsync(postId);
+                    Post post = await GetBasicPostByIdAsync(postId);
 
                     if (post != null)
                     {
