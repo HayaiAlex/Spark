@@ -52,7 +52,10 @@ namespace Spark.Data
         {
             using (var db = new SparkDBContext())
             {
-                var posts = await db.Posts.Take(100).ToListAsync();
+                var posts = await db.Posts
+                    .Take(100)
+                    .OrderByDescending(post => post.CreatedAt)
+                    .ToListAsync();
 
                 return await AddAuthorsToPosts(posts);
             }
