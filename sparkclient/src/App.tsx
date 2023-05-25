@@ -91,7 +91,7 @@ export default function App() {
             <form className="-m-8 flex justify-center">
               <input
                 name="content"
-                className="peer h-24 w-80  bg-slate-600 bg-transparent text-center text-4xl outline-none  placeholder:grayscale focus:border-y  focus:border-slate-400 focus:placeholder-transparent "
+                className="peer h-24 w-80  bg-slate-600  text-center text-4xl outline-none  placeholder:grayscale focus:border-y  focus:border-slate-400 focus:placeholder-transparent "
                 type="text"
                 onChange={handleChange}
                 value={inputEmoji}
