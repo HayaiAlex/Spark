@@ -22,7 +22,7 @@ namespace Spark.Data
                     PostId = i,
                     CreatedAt = DateTime.Now,
                     Content = $"{i}⚡",
-                    AuthorId = new Random().Next(1, 101)
+                    AuthorId = "user_2QI1HUBJlRNcyGJNHON6JBBm4O7"
                 };
             }
 

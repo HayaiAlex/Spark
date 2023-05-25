@@ -15,6 +15,6 @@ namespace Spark.Data
         public string Content { get; set; } = string.Empty;
 
         [Required]
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; }
     }
 }

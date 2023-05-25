@@ -21,7 +21,7 @@ namespace Spark.Data
                     PostId = 0,
                     CreatedAt = DateTime.Now,
                     Content = "👀",
-                    AuthorId = 0
+                    AuthorId = "na"
                 };
                 return post;
             }

@@ -23,8 +23,9 @@ namespace Spark.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -42,44 +43,44 @@ namespace Spark.Data.Migrations
                         new
                         {
                             PostId = 1,
-                            AuthorId = 25,
+                            AuthorId = "user_2QI1HUBJlRNcyGJNHON6JBBm4O7",
                             Content = "1⚡",
-                            CreatedAt = new DateTime(2023, 5, 25, 10, 1, 54, 182, DateTimeKind.Local).AddTicks(1923)
+                            CreatedAt = new DateTime(2023, 5, 25, 16, 20, 46, 222, DateTimeKind.Local).AddTicks(972)
                         },
                         new
                         {
                             PostId = 2,
-                            AuthorId = 40,
+                            AuthorId = "user_2QI1HUBJlRNcyGJNHON6JBBm4O7",
                             Content = "2⚡",
-                            CreatedAt = new DateTime(2023, 5, 25, 10, 1, 54, 182, DateTimeKind.Local).AddTicks(2043)
+                            CreatedAt = new DateTime(2023, 5, 25, 16, 20, 46, 222, DateTimeKind.Local).AddTicks(1068)
                         },
                         new
                         {
                             PostId = 3,
-                            AuthorId = 84,
+                            AuthorId = "user_2QI1HUBJlRNcyGJNHON6JBBm4O7",
                             Content = "3⚡",
-                            CreatedAt = new DateTime(2023, 5, 25, 10, 1, 54, 182, DateTimeKind.Local).AddTicks(2048)
+                            CreatedAt = new DateTime(2023, 5, 25, 16, 20, 46, 222, DateTimeKind.Local).AddTicks(1071)
                         },
                         new
                         {
                             PostId = 4,
-                            AuthorId = 46,
+                            AuthorId = "user_2QI1HUBJlRNcyGJNHON6JBBm4O7",
                             Content = "4⚡",
-                            CreatedAt = new DateTime(2023, 5, 25, 10, 1, 54, 182, DateTimeKind.Local).AddTicks(2051)
+                            CreatedAt = new DateTime(2023, 5, 25, 16, 20, 46, 222, DateTimeKind.Local).AddTicks(1074)
                         },
                         new
                         {
                             PostId = 5,
-                            AuthorId = 56,
+                            AuthorId = "user_2QI1HUBJlRNcyGJNHON6JBBm4O7",
                             Content = "5⚡",
-                            CreatedAt = new DateTime(2023, 5, 25, 10, 1, 54, 182, DateTimeKind.Local).AddTicks(2061)
+                            CreatedAt = new DateTime(2023, 5, 25, 16, 20, 46, 222, DateTimeKind.Local).AddTicks(1076)
                         },
                         new
                         {
                             PostId = 6,
-                            AuthorId = 68,
+                            AuthorId = "user_2QI1HUBJlRNcyGJNHON6JBBm4O7",
                             Content = "6⚡",
-                            CreatedAt = new DateTime(2023, 5, 25, 10, 1, 54, 182, DateTimeKind.Local).AddTicks(2064)
+                            CreatedAt = new DateTime(2023, 5, 25, 16, 20, 46, 222, DateTimeKind.Local).AddTicks(1078)
                         });
                 });
 #pragma warning restore 612, 618
