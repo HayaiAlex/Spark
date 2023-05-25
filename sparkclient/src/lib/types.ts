@@ -3,5 +3,7 @@ export interface Post {
     postId: number;
     createdAt: Date;
     content: string;
-    authorId: number;
+    authorId: string;
+    username: string;
+    profilePicture: string;
 }
