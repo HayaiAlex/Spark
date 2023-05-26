@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-slate-800;
+@layer base {
+  body {
+    @apply bg-slate-50;
+    font-family: "Maven Pro", sans-serif;
+  }
 }

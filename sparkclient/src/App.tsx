@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { SignInButton, SignOutButton, useUser } from "@clerk/clerk-react";
 import endpoints from "./lib/api";
 import type { Post } from "./lib/types";
+import EmojiPicker from "emoji-picker-react";
+import { EmojiStyle } from "emoji-picker-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { FaLinkedin, FaGithub } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaWindows } from "react-icons/fa";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
 dayjs.extend(relativeTime);
 
 export default function App() {
@@ -12,6 +15,8 @@ export default function App() {
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [inputEmoji, setInputEmoji] = useState("");
+  const [showHelp, setShowHelp] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const getPosts = async () => {
     try {
@@ -78,35 +83,10 @@ export default function App() {
   };
 
   return (
-    <div className="flex w-full flex-col items-center text-slate-100">
+    <div className="flex w-full flex-col items-center text-slate-800">
       <Header />
       <main className="flex w-full flex-col items-center p-2  md:max-w-2xl">
-        {isSignedIn && (
-          <div className="group relative flex w-full items-center justify-center gap-4 p-2">
-            <img
-              className="z-10 -mx-8 aspect-square w-24 rounded-full"
-              src={user?.profileImageUrl}
-              alt="Profile picture"
-            />
-            <form className="-m-8 flex justify-center">
-              <input
-                name="content"
-                className="peer h-24 w-80  bg-slate-600  text-center text-4xl outline-none  placeholder:grayscale focus:border-y  focus:border-slate-400 focus:placeholder-transparent "
-                type="text"
-                onChange={handleChange}
-                value={inputEmoji}
-                placeholder="⚡"
-              />
-              <button
-                type="submit"
-                onClick={addEmoji}
-                className="w-12 rounded-r bg-slate-400 p-1 px-2 transition-all hover:font-bold"
-              >
-                Post
-              </button>
-            </form>
-          </div>
-        )}
+        {isSignedIn && <CreatePost />}
 
         <div className="flex w-full flex-wrap justify-center gap-2 py-2">
           {posts.map((post) => (
@@ -121,8 +101,10 @@ export default function App() {
 
   function Header() {
     return (
-      <header className="flex w-full items-center justify-between bg-slate-600 px-4 py-3">
-        <h1 className="text-3xl font-bold">Spark ⚡</h1>
+      <header className="flex w-full items-center justify-between bg-slate-200 px-4 py-3">
+        <h1 className="font-primary text-3xl font-bold text-orange-500">
+          Spark ⚡
+        </h1>
         <nav className="flex gap-2">
           {!isSignedIn && <SignInButton />}
 
@@ -143,7 +125,7 @@ export default function App() {
 
   function Footer() {
     return (
-      <footer className="flex w-full items-center justify-center gap-2 bg-slate-500 p-2">
+      <footer className="flex w-full items-center justify-center gap-2 bg-slate-300 p-2">
         <p>Developed by Alex Adams</p>
         <a
           target="#"
@@ -158,25 +140,97 @@ export default function App() {
     );
   }
 
+  function CreatePost() {
+    return (
+      <form className="group relative flex w-full items-center justify-evenly gap-4 rounded bg-slate-300 p-2 px-4">
+        <img
+          className="z-10 aspect-square w-16 rounded-full"
+          src={user?.profileImageUrl}
+          alt="Profile picture"
+        />
+
+        <div className="relative grow">
+          <input
+            name="content"
+            className={`${
+              inputEmoji == "" ? "text-md" : "text-3xl"
+            } peer h-16 w-full rounded-full border-2 border-slate-500  bg-slate-400 p-4 outline-none  placeholder:text-slate-50 placeholder:grayscale focus:border-y  focus:border-slate-200 focus:placeholder-transparent`}
+            type="text"
+            onChange={handleChange}
+            value={inputEmoji}
+            placeholder="Send some emojis..."
+          />
+
+          <button
+            className="absolute right-2 top-3 text-4xl opacity-50   transition-all hover:opacity-100"
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+          >
+            😀
+          </button>
+          {showEmojiPicker && (
+            <div className="absolute right-0 top-20">
+              <EmojiPicker
+                emojiStyle={EmojiStyle.NATIVE}
+                onEmojiClick={(emoji) =>
+                  setInputEmoji(inputEmoji + emoji.emoji)
+                }
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col items-center">
+          <button
+            type="submit"
+            onClick={addEmoji}
+            className="h-10 w-20 rounded-full bg-orange-400  p-1 px-2 hover:bg-orange-500"
+          >
+            Post
+          </button>
+
+          <div
+            className="relative flex items-center gap-1 pt-1 text-sm hover:cursor-help"
+            onMouseEnter={() => setShowHelp(true)}
+            onMouseLeave={() => setShowHelp(false)}
+          >
+            <p className="text-slate-500">On PC?</p>
+            <AiOutlineQuestionCircle className="h-4 w-4" />
+
+            <p
+              className={`${
+                showHelp ? "" : "hidden"
+              } absolute -right-3 top-0 flex w-max rounded-full bg-slate-200 bg-opacity-80 p-1 px-1 text-xs text-slate-800`}
+            >
+              <span className="flex items-center">
+                <FaWindows />
+              </span>
+              +<span className="pr-1 font-bold">.</span> opens an emoji picker.
+            </p>
+          </div>
+        </div>
+      </form>
+    );
+  }
+
   function PostView(post: Post) {
     const scales = ["75", "100", "125"];
 
     return (
       <div
-        className={`flex grow flex-col gap-4 border-b border-slate-300 bg-slate-500`}
+        className={`bg-sllate-100 flex grow flex-col gap-4 rounded border-b bg-slate-200`}
       >
         <p className="self-center p-2  text-8xl">{post.content}</p>
 
-        <div className="flex flex-col gap-1 bg-slate-400 p-2 px-4">
+        <div className="flex flex-col gap-1 rounded-b bg-slate-300 p-2 px-4">
           <div className="flex items-center gap-1">
             <img
               className="h-6 w-6 rounded-full"
               src={post.profilePicture}
               alt="Profile picture"
             />
-            <p className="text-lg">{post.username}</p>
+            <p className="text-lg">@{post.username}</p>
           </div>
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-slate-500">
             {dayjs(post.createdAt).fromNow()}
           </p>
         </div>
