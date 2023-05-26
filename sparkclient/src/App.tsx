@@ -1,22 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SignInButton, SignOutButton, useUser } from "@clerk/clerk-react";
+
+// Utils
 import endpoints from "./lib/api";
 import type { Post } from "./lib/types";
-import EmojiPicker from "emoji-picker-react";
-import { EmojiStyle } from "emoji-picker-react";
+import { useOnClickOutside } from "./lib/hooks";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+
+// Components
+import EmojiPicker from "emoji-picker-react";
+import { EmojiStyle } from "emoji-picker-react";
 import { FaLinkedin, FaGithub, FaWindows } from "react-icons/fa";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
+
 dayjs.extend(relativeTime);
 
 export default function App() {
   const { isLoaded, isSignedIn, user } = useUser();
 
+  // State
   const [posts, setPosts] = useState<Post[]>([]);
   const [inputEmoji, setInputEmoji] = useState("");
   const [showHelp, setShowHelp] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  // Refs
+  const emojiPickerRef = useRef(null);
+  const inputRef = useRef(null);
+
+  // Effects
+  useOnClickOutside([emojiPickerRef, inputRef], () => {
+    setShowEmojiPicker(false);
+  });
 
   const getPosts = async () => {
     try {
@@ -151,6 +167,7 @@ export default function App() {
 
         <div className="relative grow">
           <input
+            ref={inputRef}
             name="content"
             className={`${
               inputEmoji == "" ? "text-md" : "text-3xl"
@@ -163,12 +180,15 @@ export default function App() {
 
           <button
             className="absolute right-2 top-3 text-4xl opacity-50   transition-all hover:opacity-100"
-            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowEmojiPicker(!showEmojiPicker);
+            }}
           >
             😀
           </button>
           {showEmojiPicker && (
-            <div className="absolute right-0 top-20">
+            <div className="absolute right-0 top-20" ref={emojiPickerRef}>
               <EmojiPicker
                 emojiStyle={EmojiStyle.NATIVE}
                 onEmojiClick={(emoji) =>
