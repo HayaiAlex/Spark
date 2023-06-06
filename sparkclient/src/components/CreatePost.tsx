@@ -83,7 +83,7 @@ export default function CreatePost({ updatePosts }: { updatePosts: Function }) {
   return (
     <form
       key="createPostForm"
-      className="group relative flex w-full items-center justify-evenly gap-4 rounded bg-slate-300 p-2 px-4"
+      className="group relative flex w-full items-center justify-evenly gap-4 rounded bg-slate-300 p-2 px-4 shadow"
     >
       <img
         className="z-10 aspect-square w-16 rounded-full"

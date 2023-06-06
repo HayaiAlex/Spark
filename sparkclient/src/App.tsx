@@ -45,7 +45,7 @@ export default function App() {
 
   function Header() {
     return (
-      <header className="flex w-full items-center justify-between bg-slate-200 px-4 py-3">
+      <header className="flex w-full items-center justify-between bg-slate-200 px-4 py-3 shadow">
         <h1 className="font-primary text-3xl font-bold text-orange-500">
           Spark ⚡
         </h1>
@@ -87,11 +87,11 @@ export default function App() {
   function PostView(post: Post) {
     return (
       <div
-        className={`bg-sllate-100 flex grow flex-col gap-4 rounded border-b bg-slate-200`}
+        className={`bg-sllate-100 flex grow flex-col gap-4 rounded border-b bg-slate-200 shadow`}
       >
         <p className="self-center p-2  text-8xl">{post.content}</p>
 
-        <div className="flex flex-col gap-1 rounded-b bg-slate-300 p-2 px-4">
+        <div className="flex flex-col gap-1 rounded-b bg-slate-300 p-2 px-4 shadow">
           <div className="flex items-center gap-1">
             <img
               className="h-6 w-6 rounded-full"

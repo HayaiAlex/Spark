@@ -4,10 +4,6 @@
   "private": true,
   "dependencies": {
     "@clerk/clerk-react": "^4.16.3",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
     "@types/node": "^16.18.32",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.4",
@@ -24,7 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest __tests__/ --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,8 +42,16 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.0.0",
+    "@types/jest": "^27.5.2",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
-    "tailwindcss": "^3.3.2"
+    "tailwindcss": "^3.3.2",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1"
   }
 }
